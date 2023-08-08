@@ -26,4 +26,45 @@ class Market
     end
     vendors
   end
+
+  def sorted_item_list
+    total_stock = []
+    @vendors.each do |vendor|
+      vendor.inventory.each do |k, v|
+        total_stock << k.name
+      end
+    end
+    total_stock.uniq.sort
+  end
+
+  def total_inventory
+    total_stock = {}
+    @vendors.each do |vendor|
+      vendor.inventory.each do |k,v|
+        total_stock[k] = {
+          quantity: vendor.check_stock(k),
+          vendors: vendors_that_sell(k)
+        }
+      end
+    end
+    total_stock
+  end
+
+  def overstocked_items
+    items = []
+    item_hash = {}
+    @vendors.each do |vendor|
+      vendor.inventory.each do |k,v|
+        if item_hash[k] == nil
+          item_hash[k] = v
+        else
+          item_hash[k] += v
+          if item_hash[k] >= 50
+            items << k
+          end
+        end
+      end
+    end
+    items.uniq             
+  end
 end
