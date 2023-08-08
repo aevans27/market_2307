@@ -22,4 +22,10 @@ class Vendor
       @inventory[item] += amount
     end
   end
+
+  def potential_revenue
+    @inventory.sum do |k, value|
+      k.price * value
+    end
+  end
 end
