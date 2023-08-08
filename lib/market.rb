@@ -42,12 +42,24 @@ class Market
     @vendors.each do |vendor|
       vendor.inventory.each do |k,v|
         total_stock[k] = {
-          quantity: vendor.check_stock(k),
+          quantity: item_total_stock(k),
           vendors: vendors_that_sell(k)
         }
       end
     end
     total_stock
+  end
+
+  def item_total_stock(item)
+    stock = 0
+    @vendors.each do |vendor|
+      vendor.inventory.each do |k,v|
+        if k == item
+          stock += v
+        end
+      end
+    end
+    stock
   end
 
   def overstocked_items
