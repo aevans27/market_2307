@@ -1,8 +1,11 @@
+require 'date'
+
 class Market
-  attr_reader :name, :vendors
+  attr_reader :name, :vendors, :date
   def initialize(name)
     @name = name
     @vendors = []
+    @date = Date.today
   end
 
   def add_vendor(vendor)
@@ -18,13 +21,9 @@ class Market
   end
 
   def vendors_that_sell(item)
-    vendors = []
-    @vendors.each do |vendor|
-      if vendor.inventory.include?(item)
-        vendors << vendor
-      end
+    @vendors.find_all do |vendor|
+      vendor.inventory.include?(item)
     end
-    vendors
   end
 
   def sorted_item_list
@@ -78,5 +77,29 @@ class Market
       end
     end
     items.uniq             
+  end
+
+  def get_date
+    @date
+  end
+
+  def sell(item, amount)
+    # left_over = 0
+    if item_total_stock(item) < amount
+      false
+    # else
+    #   @vendors.each do |vendor|
+    #     vendor.inventory.each do |k, v|
+    #       if item == k
+    #         if v < amount && amount > left_over
+    #           left_over = (amount - v)
+    #           inventory[k] = 0
+    #         else 
+    #           inventory[k] -= amount
+    #         end
+    #       end
+    #     end
+    #   end
+    end
   end
 end
